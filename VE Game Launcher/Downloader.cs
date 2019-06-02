@@ -40,7 +40,12 @@ namespace VE_Game_Launcher
                 foreach (JObject obj in local_artifacts)
                 {
                     JToken found = artifacts.Find(e => e["id"].Equals(obj["id"]));
-                    if (found["version"].Equals(obj["version"]) && File.Exists($"{this.RootPath}{obj["location"].ToString()}{obj["name"].ToString()}"))
+                    string filePath = $"{this.RootPath}{obj["location"].ToString()}{obj["name"].ToString()}";
+                    if (found is null)
+                    {
+                        File.Delete(filePath);
+                    }
+                    else if (found["version"].Equals(obj["version"]) && File.Exists(filePath))
                     {
                         artifacts.Remove(found);
                     }
